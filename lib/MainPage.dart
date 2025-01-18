@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'HomePage.dart';
 import 'SearchPage.dart';
 
 class MainPage extends StatefulWidget {
@@ -57,23 +58,6 @@ class _MainPageState extends State<MainPage> {
             label: '설정',
           ),
         ],
-      ),
-    );
-  }
-}
-
-// 새로운 페이지 정의
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('홈 페이지'),
-      ),
-      body: const Center(
-        child: Text('여기는 홈 페이지입니다.'),
       ),
     );
   }
