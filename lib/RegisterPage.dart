@@ -363,7 +363,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
             ),
             const SizedBox(height: 16),
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(width: 55),
                 _selectedJob == null
@@ -395,55 +396,55 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: Colors.black
                   ),),
                 ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: 235,
+                  child: TextField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: '이름',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: 235,
+                  child: TextField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      labelText: '아이디',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: 235,
+                  child: TextField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      labelText: '비밀번호',
+                      border: OutlineInputBorder(),
+                    ),
+                    obscureText: true,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: 235,
+                  child: TextField(
+                    controller: _passwordAckController,
+                    decoration: const InputDecoration(
+                      labelText: '비밀번호 확인',
+                      border: OutlineInputBorder(),
+                    ),
+                    obscureText: true,
+                  ),
+                ),
+                const SizedBox(height: 55),
               ],
             ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: 235,
-              child: TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: '이름',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: 235,
-              child: TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: '아이디',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: 235,
-              child: TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: '비밀번호',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: 235,
-              child: TextField(
-                controller: _passwordAckController,
-                decoration: const InputDecoration(
-                  labelText: '비밀번호 확인',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-              ),
-            ),
-            const SizedBox(height: 55),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF100A6C),

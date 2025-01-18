@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import "ChatPage.dart";
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -10,32 +12,33 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   String _selectedOption = '경영·사무';
-  final List<Map<String, dynamic>> dummyData = [
-    {
-      '이름': '이름이름이름',
-      '직무': '직무직무직무',
-      '기업': '기업기업기업',
-      '경력': '경력경력경력',
-      '업무': '업무업무업무',
-      '경험': '경험 내용 예시입니다.',
-    },
-    {
-      '이름': '홍길동',
-      '직무': '소프트웨어 엔지니어',
-      '기업': 'ABC 회사',
-      '경력': '5년',
-      '업무': '모바일 앱 개발',
-      '경험': 'Flutter 프로젝트 경험 상세 설명.',
-    },
-    {
-      '이름': '김철수',
-      '직무': '데이터 분석가',
-      '기업': '데이터랩',
-      '경력': '3년',
-      '업무': '데이터 시각화 및 분석',
-      '경험': '파이썬을 활용한 데이터 분석 경험.',
-    },
-  ];
+  List<Map<String, dynamic>> actualData = [];
+
+  // 필터링 API 호출
+  Future<void> fetchFilteredData(int filterId) async {
+    try {
+      final dio = Dio();
+      final response = await dio.get('http://192.168.185.169:8000/api/filter-senior/$filterId');
+      if (response.statusCode == 200) {
+        setState(() {
+          actualData = (response.data as List)
+              .map((data) => {
+            '이름': data['name'] ?? 'N/A',
+            '직무': data['job'] ?? 'N/A',
+            '기업': data['company'] ?? 'N/A',
+            '경력': '${data['career'] ?? 'N/A'}년',
+            '업무': data['stack']?.join(', ') ?? 'N/A',
+            '경험': data['experience'] ?? 'N/A',
+          })
+              .toList();
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
 
   void _showExperienceDialog(BuildContext context, Map<String, dynamic> item) {
     showDialog(
@@ -72,6 +75,80 @@ class _SearchPageState extends State<SearchPage> {
       },
     );
   }
+  // 검색 API 호출
+  Future<void> fetchData({String? keyword}) async {
+    try {
+      final dio = Dio();
+      Response response;
+
+      if (keyword == null || keyword.isEmpty) {
+        response = await dio.get('http://192.168.185.169:8000/api/get-all-seniors');
+      } else {
+        response = await dio.post(
+          'http://192.168.185.169:8000/api/search-senior',
+          data: {'keyword': keyword},
+          options: Options(
+            headers: {'Content-Type': 'application/json'},
+          ),
+        );
+      }
+
+      if (response.statusCode == 200) {
+        setState(() {
+          actualData = (response.data as List)
+              .map((data) => {
+            '이름': data['name'] ?? 'N/A',
+            '직무': data['job'] ?? 'N/A',
+            '기업': data['company'] ?? 'N/A',
+            '경력': '${data['career'] ?? 'N/A'}년',
+            '업무': data['stack']?.join(', ') ?? 'N/A',
+            '경험': data['experience'] ?? 'N/A',
+          })
+              .toList();
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  // 드롭다운 선택에 따른 필터링
+  void _onFilterChanged(String? newValue) {
+    if (newValue == null) return;
+
+    setState(() {
+      _selectedOption = newValue;
+    });
+
+    // 드롭다운 값에 따라 필터 ID 매핑
+    final filterMapping = {
+      '경영·사무': 1,
+      '마케팅·광고·홍보': 2,
+      'IT·인터넷': 3,
+      '무역·유통': 4,
+      '생산·제조': 5,
+      '영업·고객상담': 6,
+      '건설': 7,
+      '금융': 8,
+      '연구개발·설계': 9,
+      '디자인': 10,
+      '미디어': 11,
+      '전문·특수직': 12,
+    };
+
+    final filterId = filterMapping[newValue];
+    if (filterId != null) {
+      fetchFilteredData(filterId); // 필터링된 데이터 가져오기
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,58 +166,52 @@ class _SearchPageState extends State<SearchPage> {
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: () {
-                    final query = _searchController.text;
-                    print('검색어: $query');
+                    final query = _searchController.text.trim();
+                    fetchData(keyword: query.isNotEmpty ? query : null);
                   },
                 ),
               ),
             ),
             const SizedBox(height: 16),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12), // 내부 여백
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
-                color: Colors.white, // 배경색
-                border: Border.all(
-                  color: const Color(0xFFDADADA), // 테두리 색상
-                  width: 1, // 테두리 두께
-                ),
-                borderRadius: BorderRadius.circular(8), // 테두리 둥글게
+                color: Colors.white,
+                border: Border.all(color: const Color(0xFFDADADA), width: 1),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   value: _selectedOption,
-                  isExpanded: true, // 드롭다운 버튼을 컨테이너 너비에 맞게 확장
-                  icon: const Icon(
-                    Icons.arrow_drop_down,
-                    color: Color(0xFF4F4F4F), // 아이콘 색상
-                  ),
+                  isExpanded: true,
+                  icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF4F4F4F)),
                   dropdownColor: Colors.white,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFF4F4F4F), // 텍스트 색상
-                  ),
-                  items: <String>[
+                  style: const TextStyle(fontSize: 16, color: Color(0xFF4F4F4F)),
+                  items: [
                     '경영·사무',
                     '마케팅·광고·홍보',
                     'IT·인터넷',
-                  ].map((String value) {
+                    '무역·유통',
+                    '생산·제조',
+                    '영업·고객상담',
+                    '건설',
+                    '금융',
+                    '연구개발·설계',
+                    '디자인',
+                    '미디어',
+                    '전문·특수직',
+                  ].map((value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
                     );
                   }).toList(),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        _selectedOption = newValue; // 선택된 값 업데이트
-                      });
-                    }
-                  },
+                  onChanged: _onFilterChanged,
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            dummyData.isEmpty
+            actualData.isEmpty
                 ? const Expanded(
               child: Center(
                 child: Text('검색 결과가 없습니다.'),
@@ -148,24 +219,20 @@ class _SearchPageState extends State<SearchPage> {
             )
                 : Expanded(
               child: ListView.builder(
-                itemCount: dummyData.length,
+                itemCount: actualData.length,
                 itemBuilder: (context, index) {
-                  final item = dummyData[index];
+                  final item = actualData[index];
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          width: 0.1,
-                          color: Colors.black,
-                        )),
+                      color: Colors.white,
+                      border: Border.all(width: 0.1, color: Colors.black),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween, // 하단 배치 설정
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // 상단 정보
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -181,20 +248,16 @@ class _SearchPageState extends State<SearchPage> {
                             Text('기업: ${item['기업'] ?? 'N/A'}'),
                             Text('경력: ${item['경력'] ?? 'N/A'}'),
                             Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('업무: ${item['업무'] ?? 'N/A'}'),
                                 GestureDetector(
                                   onTap: () {
-                                    _showExperienceDialog(
-                                        context, item); // 전체 데이터를 전달
+                                    _showExperienceDialog(context, item);
                                   },
                                   child: const Text(
                                     "경험 보러 가기 >",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                 ),
                               ],
@@ -212,9 +275,12 @@ class _SearchPageState extends State<SearchPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print('Floating button pressed!');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ChatPage()),
+          );
         },
-        backgroundColor: Color(0xFFD9D9D9),
+        backgroundColor: const Color(0xFFD9D9D9),
         child: const Icon(Icons.chat_bubble),
         shape: const CircleBorder(),
       ),
