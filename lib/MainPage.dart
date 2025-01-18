@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
 import 'SearchPage.dart';
+import 'MyPage.dart';
+import 'LoginPage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,16 +14,15 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
 
-  // 각 탭에 해당하는 실제 페이지 위젯 추가
   final List<Widget> _pages = [
     const HomePage(),
     const SearchPage(),
-    const SettingsPage(),
+    const MyPage(),
   ];
 
   void _onNavItemTapped(int index) {
     setState(() {
-      _currentIndex = index; // 선택된 탭 인덱스 업데이트
+      _currentIndex = index;
     });
   }
 
@@ -29,67 +30,59 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Image.asset(
-            'assets/AppLogoForLogin.png',
-            height: 60,
-          ),
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.asset(
+              'assets/AppLogoForLogin.png',
+              width: 100,
+              height: 140,
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.arrow_forward, // 오른쪽 화살표 아이콘
+                color: Colors.black, // 아이콘 색상 설정
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
+            ),
+          ],
         ),
-        leadingWidth: 120,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white, // 앱바 배경을 하얀색으로 설정
         elevation: 0,
       ),
-      body: _pages[_currentIndex], // 선택된 페이지 표시
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onNavItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '홈',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: '검색',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '설정',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('검색 페이지'),
-      ),
-      body: const Center(
-        child: Text('여기는 검색 페이지입니다.'),
-      ),
-    );
-  }
-}
-
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('설정 페이지'),
-      ),
-      body: const Center(
-        child: Text('여기는 설정 페이지입니다.'),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16), // 왼쪽 상단 둥글기
+          topRight: Radius.circular(16), // 오른쪽 상단 둥글기
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: _onNavItemTapped,
+          backgroundColor: const Color(0xFFD9D9D9), // 네브바 배경 색
+          showSelectedLabels: false, // 선택된 아이템의 레이블 숨김
+          showUnselectedLabels: false, // 선택되지 않은 아이템의 레이블 숨김
+          items: [
+            BottomNavigationBarItem(
+              icon: Image.asset('assets/HomeIcon.png'),
+              label: '', // 레이블 제거
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset("assets/SearchIcon.png"),
+              label: '', // 레이블 제거
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset('assets/IconPage.png'),
+              label: '', // 레이블 제거
+            ),
+          ],
+        ),
       ),
     );
   }

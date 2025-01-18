@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
 import 'MainPage.dart';
+import 'SearchPage.dart';
+import 'RegisterPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MainPage(), // LoginPage를 시작 페이지로 설정
+      home: const MainPage(),
     );
   }
 }
