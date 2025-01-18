@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import 'MainPage.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -71,26 +73,91 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     ),
-    Container(
-      color: Colors.red,
-      child: Center(child: Text("슬라이드 3", style: TextStyle(fontSize: 24, color: Colors.white))),
+    Expanded(
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Color(0xffDEE2E6), width: 1.4),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(45, 35, 45, 0),
+          child: Column(
+            children: [
+              Text('내가 주니어라면?', style: TextStyle(fontSize: 20, height: 1.2),
+              ),
+              Text('시니어의 경험을 보며', style: TextStyle(fontSize: 20, height: 1.2),
+              ),
+              Text('나의 역량을 키워보세요!', style: TextStyle(fontSize: 20, height: 1.2),
+              ),
+              SizedBox(height: 25,),
+              Image.asset(
+                'assets/HomeChat.png',
+                height: 45,
+              ),
+            ],
+          ),
+        ),
+      ),
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 28.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 1. 상단 문구
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('OO님,', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),),
-                Text('경험을 나누고,', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),),
-                Text('같이 성장해볼까요?', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'OO님,',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '경험',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: Color(0xff0A00C0)),
+                      ),
+                      TextSpan(
+                        text: '을 나누고,',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '같이 ',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                      ),
+                      TextSpan(
+                        text: '성장',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xff0A00C0)),
+                      ),
+                      TextSpan(
+                        text: '해볼까요?',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 25,),
@@ -281,8 +348,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-
-
 
           ],
         ),
