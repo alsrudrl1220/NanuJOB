@@ -1,11 +1,17 @@
-# 📌 Introduction
+## 📌 Introduction
 ![image](https://github.com/user-attachments/assets/4cb70261-8aa7-43c3-8a59-af3150a538bb)
 ### 🏆 Prize
 2025 GDGoC New Year Hackathon: 백야 **우수상**      
 
 <br/>
 
-# 📌 Key Features
+## 📌 Purpose & Goal
+![image](https://github.com/user-attachments/assets/96ca48f1-602e-45ac-88e9-b5701ebf0273)
+
+![image](https://github.com/user-attachments/assets/5751ad8b-0727-4b91-93b2-6ee74f3afe00)
+
+
+## 📌 Key Features
 ![image](https://github.com/user-attachments/assets/83d25f6f-16a7-4dd0-acd5-9d8dd424bf7f)
 
 ![image](https://github.com/user-attachments/assets/28f47897-7434-4499-b34d-b1585f7bdb48)
@@ -14,7 +20,7 @@
 
 ![image](https://github.com/user-attachments/assets/d0e02386-71a4-43ea-933b-5efa1a490147)
 
-# 📌 Getting Started
+## 📌 Getting Started
 
 This project is a starting point for a Flutter application.
 
