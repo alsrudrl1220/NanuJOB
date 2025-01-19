@@ -1,8 +1,20 @@
-# gdgoc_hackathon
+# 📌 Introduction
+![image](https://github.com/user-attachments/assets/4cb70261-8aa7-43c3-8a59-af3150a538bb)
+### 🏆 Prize
+2025 GDGoC New Year Hackathon: 백야 **우수상**      
 
-A new Flutter project.
+<br/>
 
-## Getting Started
+# 📌 Key Features
+![image](https://github.com/user-attachments/assets/83d25f6f-16a7-4dd0-acd5-9d8dd424bf7f)
+
+![image](https://github.com/user-attachments/assets/28f47897-7434-4499-b34d-b1585f7bdb48)
+
+![image](https://github.com/user-attachments/assets/c96d5b13-4e7a-487f-8d49-f0628d36050d)
+
+![image](https://github.com/user-attachments/assets/d0e02386-71a4-43ea-933b-5efa1a490147)
+
+# 📌 Getting Started
 
 This project is a starting point for a Flutter application.
 
